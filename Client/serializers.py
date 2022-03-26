@@ -5,4 +5,4 @@ from .models import Person
 class PesronSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('name', 'Age', 'Email','Gender', 'Weight','Height', 'Phone', 'Password','Image')
+        fields = ('Name', 'Username','Age','Sport', 'Email','Gender', 'Train','Weight','Height', 'Hours','Effort','Goal_Type' , 'Goal_Weight' , 'Password','Image')

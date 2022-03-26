@@ -18,6 +18,7 @@ class PersonViewSet(viewsets.ModelViewSet):
     def post(self, request, pk, format=None):
         return Response("ok")
 
+
 from rest_framework.test import APIRequestFactory
 
 # Using the standard RequestFactory API to create a form POST request
