@@ -33,7 +33,7 @@ class Person(models.Model):
 
    Name = models.CharField(max_length=100,blank=False,help_text="Enter your Full name")
    Username = models.CharField(max_length=100,blank=False ,help_text="Username")
-   Age = models.CharField(max_length=10,blank=False)
+   Age = models.IntegerField(blank=False)
    Email = models.EmailField(blank=False)
    Password = models.CharField(max_length=100,blank=False)
    Gender = models.CharField(blank=False, max_length=10, choices=GENDER, default='M')
@@ -48,4 +48,33 @@ class Person(models.Model):
    Image = models.ImageField(upload_to='images',null=True)
 
    def __str__(self):
-      return self.name
+      return self.Name
+
+   def Calculate_BMR(self):
+      if self.GENDER == "M":
+         BMR = (10 * self.Weight) + (6.25 * self.Height) + (-5 * self.Age) + 5
+      else:
+         BMR = (10 * self.Weight) + (6.25 * self.Height) + (-5 * self.Age) - 161
+      return BMR
+
+   def Calculate_TDEE(self):
+      if self.Train == 0:
+         TDEE = self.Calculate_BMR()*1.2
+      elif self.Train == 1:
+         TDEE = self.Calculate_BMR()*1.3
+      elif self.Train == 2:
+         TDEE = self.Calculate_BMR()*1.4
+      elif self.Train == 3:
+         TDEE = self.Calculate_BMR()*1.45
+      elif self.Train == 4:
+         TDEE = self.Calculate_BMR()*1.5
+      elif self.Train == 5:
+         TDEE = self.Calculate_BMR()*1.7
+      elif self.Train == 6:
+         TDEE = self.Calculate_BMR()*1.8
+      elif self.Train == 7:
+         TDEE = self.Calculate_BMR()*2
+      else:
+         TDEE = self.Calculate_BMR()*2.2
+
+      return TDEE

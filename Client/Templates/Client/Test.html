@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% for person in persons %}
+<ul>
+    <li>  Name : {{person.Name}}</li>
+    <li>  BMR : {{person.Calculate_BMR }}</li>
+    <li>  TDDE : {{person.Calculate_TDEE }}</li>
+</ul>
+{% endfor %}
+</body>
+</html>
