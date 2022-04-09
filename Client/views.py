@@ -2,12 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import api_view
-
 from .models import Person
 from .serializers import PesronSerializer
 import json
 from rest_framework.response import Response
-
 class PersonViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AllowAny,)
 
@@ -102,9 +100,10 @@ def get_clients(request):
 from django.contrib.auth import get_user_model
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from .serializers import UserSerializer
-
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -114,3 +113,12 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = get_user_model().objects.all()
+
+
+from rest_framework import generics
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
