@@ -43,7 +43,7 @@ def get_clients(request):
             BMR = (10 * client['Weight']) + (6.25 * client['Height']) + (-5 * client['Age']) + 5
         else:
             BMR = (10 * client['Weight']) + (6.25 * client['Height']) + (-5 * client['Age']) - 161
-        client['Calculate_BMR']= BMR
+        client['Calculate_BMR']= float(BMR)
 
         if client['Train'] == 0:
             TDEE = client['Calculate_BMR'] * 1.2
@@ -64,7 +64,7 @@ def get_clients(request):
         else:
             TDEE = client['Calculate_BMR'] * 2.2
 
-        client['Calculate_TDEE'] = TDEE
+        client['Calculate_TDEE'] = float(TDEE)
 
         print(client['Calculate_BMR'],client['Calculate_TDEE'])
 
