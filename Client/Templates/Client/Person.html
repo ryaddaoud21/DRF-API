@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Person</title>
 </head>
 <body>
 
@@ -22,6 +22,7 @@
     </tr>
     </thead>
     <tbody>
+    {% if request.user.is_superuser %}
     {% for client in clients %}
     <tr>
 
@@ -36,6 +37,26 @@
         <td>{{ client.Calculate_TDEE }}</td>
         <td>{{ client.Image.url }}</td>
     </tr>
+    {% endfor %}
+    {% endif %}
+
+    {% for s in clients %}
+    {% if request.user.username == s.Username  %}
+        <tr>
+
+            <td>{{ s.id }}</td>
+            <td>{{ s.Name }}</td>
+            <td>{{ s.Age }}</td>
+            <td>{{ s.Gender }}</td>
+            <td>{{ s.Train }}</td>
+            <td>{{ s.Weight }}</td>
+            <td>{{ s.Height }}</td>
+            <td>{{ s.Calculate_BMR }}</td>
+            <td>{{ s.Calculate_TDEE }}</td>
+            <td>{{ s.Image.url }}</td>
+        </tr>
+        {% endif %}
+
     {% endfor %}
     </tbody>
 </table>

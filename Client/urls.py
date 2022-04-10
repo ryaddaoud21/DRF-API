@@ -15,12 +15,12 @@ router.register(r'people', PersonViewSet)
 
 urlpatterns = [
    path('', include(router.urls)),
-   path('test/', BMR , name="bmr"),
    path('test1/', get_clients , name="test"),
    path('api-auth/', include('rest_framework.urls')),
    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
    path('register/', RegisterView.as_view(), name='auth_register'),
+   path('detail/', PersonAuthToken.as_view(), name='detail'),
 
 ]
 router = DefaultRouter()

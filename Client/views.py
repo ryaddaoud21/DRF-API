@@ -12,7 +12,6 @@ class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PesronSerializer
 
-
     def post(self, request, pk, format=None):
         return Response("ok")
 
@@ -21,11 +20,6 @@ from rest_framework.test import APIRequestFactory
 
 # Using the standard RequestFactory API to create a form POST request
 factory = APIRequestFactory()
-
-def BMR (request):
-    persons = Person.objects.all()
-    context = {"persons" :persons}
-    return render(request,'Client/Test.html', context)
 
 
 import json
@@ -109,11 +103,9 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     UserModel View.
     """
-
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
     queryset = get_user_model().objects.all()
-
 
 from rest_framework import generics
 
@@ -122,3 +114,21 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
+
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+import json
+
+from django.http import JsonResponse
+
+
+
+class PersonAuthToken(ObtainAuthToken):
+
+    def get(self, request, format=None):
+        clients = Person.objects.all()
+        user = request.user
+        context = {'clients': clients}
+        return render(request,'Client/Person.html', context)
+
