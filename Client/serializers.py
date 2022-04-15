@@ -1,3 +1,6 @@
+import os
+
+import cv2
 from rest_framework import serializers
 from .models import Person
 from django.contrib.auth.password_validation import validate_password
@@ -5,7 +8,8 @@ from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 import pytesseract
 from PIL import Image
-
+import easyocr
+import numpy as np
 
 class PesronSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, required=True)
@@ -13,7 +17,8 @@ class PesronSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
         fields = ['Name', 'Username', 'Age', 'Sport', 'Email', 'Gender', 'Train', 'Weight', 'Height', 'Hours', 'Effort',
-                  'Goal_Type', 'Goal_Weight','Calculate_BMR','Calculate_TDEE', 'Password', 'password2', 'Image' ]
+                  'Goal_Type', 'Goal_Weight','Calculate_BMR','Calculate_TDEE', 'Password', 'password2', 'Image','In_body']
+
         extra_kwargs = {
             'Name': {'required': True},
             'Username': {'required': True},
@@ -28,13 +33,15 @@ class PesronSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        a = validated_data['Image']
+        # mooon = cv2.imread(File)
+        File = validated_data['Image']
+        mooon = cv2.imdecode(np.fromstring(File.read(), np.uint8), cv2.IMREAD_UNCHANGED)
 
-        '''
-        pytesseract.pytesseract.tesseract_cmd = r'DRF_API\Tesseract-OCR\tesseract.exe'
-        b= pytesseract.image_to_string(Image.open(a))
-        print(b)
-        '''
+        reader = easyocr.Reader(['en'], gpu=False)
+        result = reader.readtext(mooon)
+        print(len(result))
+        print(result[0])
+        print(result[0][1])
 
         user = User.objects.create(
             username=validated_data['Username'],
@@ -57,12 +64,16 @@ class PesronSerializer(serializers.ModelSerializer):
             Effort=validated_data['Effort'],
             Goal_Type=validated_data['Goal_Type'],
             Goal_Weight=validated_data['Goal_Weight'],
-            Image=a,
+            Image=validated_data['Image'],
+            Inbody=result[0][1],
 
         )
         user.set_password(validated_data['Password'])
         user.save()
         person.save()
+
+
+
 
 
 

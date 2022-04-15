@@ -46,6 +46,7 @@ class Person(models.Model):
    Goal_Type = models.CharField(blank=False, max_length=10, choices=GOAL, default='LA',help_text="THE GOAL YOU WANT TO ACHIEVE")
    Goal_Weight = models.CharField(blank=False, max_length=10, choices=GOAL_W, default='1')
    Image = models.ImageField(upload_to='images',null=True)
+   Inbody = models.CharField(max_length=500,blank=True,null=True)
 
    def __str__(self):
       return self.Name
@@ -56,6 +57,11 @@ class Person(models.Model):
       else:
          BMR = (10 * self.Weight) + (6.25 * self.Height) + (-5 * self.Age) - 161
       return BMR
+
+
+   def In_body(self):
+      return self.Inbody
+
 
    def Calculate_TDEE(self):
       if self.Train == 0:
